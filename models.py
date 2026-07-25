@@ -15,15 +15,6 @@ metadata = MetaData(naming_convention=naming_convention)
 
 db = SQLAlchemy(metadata=metadata)
 
-workout_exercises = db.Table(
-    "workout_exercises",
-    db.Column('exercise_id', db.Integer, db.ForeignKey('exercises.id'), primary_key=True),
-    db.Column('workout_id', db.Integer, db.ForeignKey('workouts.id'), primary_key=True),
-    reps = db.Column(db.Integer, nullable=False),
-    sets = db.Column(db.Integer, nullable=False),
-    duration_seconds = db.Column(db.Integer, nullable=False)
-)
-
 class Exercise(db.Model):
     __tablename__ = "exercises"
 
@@ -41,3 +32,16 @@ class Workout(db.Model):
     duration_minutes = db.Column(db.Integer, nullable=False)
     notes = db.Column(db.Text(250), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
+
+class WorkoutExercise(db.Model):
+    __tablename__ = "workout_exercises"
+
+    workout_id = db.Column(db.Integer,db.ForeignKey("workouts.id"),primary_key=True)
+    exercise_id = db.Column(db.Integer,db.ForeignKey("exercises.id"),primary_key=True)
+
+    sets = db.Column(db.Integer, nullable=False)
+    reps = db.Column(db.Integer, nullable=False)
+    duration_seconds = db.Column(db.Integer)
+    
+    workout = db.relationship("Workout",back_populates="workout_exercises")
+    exercise = db.relationship("Exercise",back_populates="workout_exercises")
