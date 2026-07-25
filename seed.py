@@ -1,7 +1,7 @@
 from datetime import date
 
 from app import app
-from models import Workout, Exercise, WorkoutExercise, db
+from models import Exercise, Workout, WorkoutExercise, db
 
 
 def seed_data():
