@@ -1,4 +1,5 @@
-from marshmallow import Schema, ValidationError, fields, validates_schema
+from marshmallow import Schema, fields
+
 
 class ExerciseSchema(Schema):
     id = fields.Int(dump_only=True)
