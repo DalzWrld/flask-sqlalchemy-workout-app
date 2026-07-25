@@ -40,10 +40,11 @@ class Workout(db.Model):
 class WorkoutExercise(db.Model):
     __tablename__ = "workout_exercises"
 
-    workout_id = db.Column(db.Integer, db.ForeignKey("workouts.id"), primary_key=True)
-    exercise_id = db.Column(db.Integer, db.ForeignKey("exercises.id"), primary_key=True)
-
     id = db.Column(db.Integer, primary_key=True)
+
+    workout_id = db.Column(db.Integer, db.ForeignKey("workouts.id"))
+    exercise_id = db.Column(db.Integer, db.ForeignKey("exercises.id"))
+
     sets = db.Column(db.Integer, nullable=False)
     reps = db.Column(db.Integer, nullable=False)
     duration_seconds = db.Column(db.Integer, nullable=True)
