@@ -15,7 +15,15 @@ metadata = MetaData(naming_convention=naming_convention)
 
 db = SQLAlchemy(metadata=metadata)
 
+workout_exercises = db.Table(
+    "workout_exercises",
+    db.Column('exercise_id', db.Integer, db.ForeignKey('workout.id'), primary_key=True),
+    db.Column('workout_id', db.Integer, db.ForeignKey('exercise.id'), primary_key=True)
+)
+
 class Exercise(db.Model):
+    __tablename__ = "exercises"
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     category = db.Column(db.String, nullable=False)
@@ -23,7 +31,10 @@ class Exercise(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now)
 
 class Workout(db.Model):
+    __tablename__ = "workouts"
+
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.Date, nullable=False)
     duration_minutes = db.Column(db.Integer, nullable=False)
     notes = db.Column(db.Text(250), nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.now)
