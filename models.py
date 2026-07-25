@@ -46,7 +46,8 @@ class WorkoutExercise(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     sets = db.Column(db.Integer, nullable=False)
     reps = db.Column(db.Integer, nullable=False)
-    duration_seconds = db.Column(db.Integer)
+    duration_seconds = db.Column(db.Integer, nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.now)
 
     workouts = db.relationship("Workout", back_populates="workout_exercises")
     exercises = db.relationship("Exercise", back_populates="workout_exercises")
