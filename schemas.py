@@ -12,3 +12,9 @@ class WorkoutSchema(Schema):
     date = fields.Date(required=True)
     duration_minutes = fields.Time(required=True)
     notes = fields.Str()
+
+class WorkoutExerciseSchema(Schema):
+    id = fields.Int(dump_only=True)
+    sets = fields.Int(required=True)
+    reps = fields.Int(required=True)
+    duration_seconds = fields.Int(required=True)
