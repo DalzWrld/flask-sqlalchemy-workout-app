@@ -17,8 +17,11 @@ db = SQLAlchemy(metadata=metadata)
 
 workout_exercises = db.Table(
     "workout_exercises",
-    db.Column('exercise_id', db.Integer, db.ForeignKey('workout.id'), primary_key=True),
-    db.Column('workout_id', db.Integer, db.ForeignKey('exercise.id'), primary_key=True)
+    db.Column('exercise_id', db.Integer, db.ForeignKey('exercises.id'), primary_key=True),
+    db.Column('workout_id', db.Integer, db.ForeignKey('workouts.id'), primary_key=True),
+    reps = db.Column(db.Integer, nullable=False),
+    sets = db.Column(db.Integer, nullable=False),
+    duration_seconds = db.Column(db.Integer, nullable=False)
 )
 
 class Exercise(db.Model):
