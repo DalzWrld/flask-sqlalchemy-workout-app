@@ -38,7 +38,9 @@ def get_workout(id):
 @app.route("/workouts", methods=["POST"])
 def create_workout():
     try:
-        workout = workout_schema.load(request.json)
+        data = workout_schema.load(request.json)
+
+        workout = Workout(**data)
 
         db.session.add(workout)
         db.session.commit()
@@ -76,7 +78,9 @@ def get_exercise(id):
 @app.route("/exercises", methods=["POST"])
 def create_exercise():
     try:
-        exercise = exercise_schema.load(request.json)
+        data = exercise_schema.load(request.json)
+
+        exercise = Workout(**data)
 
         db.session.add(exercise)
         db.session.commit()
@@ -114,7 +118,6 @@ def add_exercise_to_workout(workout_id, exercise_id):
     data = request.get_json()
 
     try:
-
         workout_exercise = WorkoutExercise(
             workout=workout,
             exercise=exercise,
@@ -131,7 +134,6 @@ def add_exercise_to_workout(workout_id, exercise_id):
         ), 201
 
     except Exception as e:
-
         db.session.rollback()
 
         return jsonify({

@@ -34,10 +34,6 @@ class ExerciseSchema(Schema):
                 f"Category must be one of {valid_categories}"
             )
 
-    @post_load
-    def make_exercise(self, data, **kwargs):
-        return Exercise(**data)
-
 
 class WorkoutSchema(Schema):
     id = fields.Int(dump_only=True)
@@ -49,10 +45,6 @@ class WorkoutSchema(Schema):
     exercises = fields.Nested("ExerciseSchema", excludes=("exercises"), many=True, dump_only=True)
     workout_exercises = fields.Nested("WorkoutExerciseSchema", excludes=("exercises"), many=True, dump_only=True)
 
-    @post_load
-    def make_workout(self, data, **kwargs):
-        return Workout(**data)
-
 
 class WorkoutExerciseSchema(Schema):
     id = fields.Int(dump_only=True)
@@ -63,10 +55,6 @@ class WorkoutExerciseSchema(Schema):
     duration_seconds = fields.Int(required=True, validate=validate.Range(min=0))
 
     created_at = fields.DateTime(dump_only=True)
-
-    @post_load
-    def make_workout_exercise(self, data, **kwargs):
-        return WorkoutExercise(**data)
 
 
 exercise_schema = ExerciseSchema()
