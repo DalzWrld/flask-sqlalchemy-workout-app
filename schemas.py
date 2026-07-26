@@ -37,8 +37,8 @@ class WorkoutSchema(Schema):
     notes = fields.Str()
     created_at = fields.DateTime(dump_only=True)
 
-    exercises = fields.Nested("ExerciseSchema", excludes=("exercises"), many=True, dump_only=True)
-    workout_exercises = fields.Nested("WorkoutExerciseSchema", excludes=("exercises"), many=True, dump_only=True)
+    exercises = fields.Nested("ExerciseSchema", many=True, dump_only=True)
+    workout_exercises = fields.Nested("WorkoutExerciseSchema", many=True, dump_only=True)
 
 
 class WorkoutExerciseSchema(Schema):
