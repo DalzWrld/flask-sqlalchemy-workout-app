@@ -4,7 +4,13 @@ from flask_migrate import Migrate
 from flask_restful import Api
 
 from models import Exercise, Workout, WorkoutExercise, db
-from schemas import exercise_schema, exercises_schema, workout_schema, workouts_schema, workout_exercise_schema
+from schemas import (
+    exercise_schema,
+    exercises_schema,
+    workout_exercise_schema,
+    workout_schema,
+    workouts_schema,
+)
 
 load_dotenv()
 
