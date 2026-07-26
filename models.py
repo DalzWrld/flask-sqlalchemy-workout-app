@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import MetaData
+from sqlalchemy import MetaData, UniqueConstraint
 from sqlalchemy.orm import validates
 
 naming_convention = {
@@ -75,6 +75,14 @@ class Workout(db.Model):
 
 class WorkoutExercise(db.Model):
     __tablename__ = "workout_exercises"
+
+    __table_args__ = (
+        UniqueConstraint(
+            "workout_id",
+            "exercise_id",
+            name="unique_workout_exercise"
+        ),
+    )
 
     id = db.Column(db.Integer, primary_key=True)
 
