@@ -49,8 +49,31 @@ class WorkoutSchema(Schema):
     exercises = fields.Nested("ExerciseSchema", excludes=("exercises"), many=True, dump_only=True)
     workout_exercises = fields.Nested("WorkoutExerciseSchema", excludes=("exercises"), many=True, dump_only=True)
 
+    @post_load
+    def make_workout(self, data, **kwargs):
+        return Workout(**data)
+
+
 class WorkoutExerciseSchema(Schema):
     id = fields.Int(dump_only=True)
-    sets = fields.Int(required=True)
-    reps = fields.Int(required=True)
-    duration_seconds = fields.Int(required=True)
+    workout_id = fields.Int(required=True)
+    exercise_id = fields.Int(required=True)
+    sets = fields.Int(required=True, validate=validate.Range(min=1))
+    reps = fields.Int(required=True, validate=validate.Range(min=1))
+    duration_seconds = fields.Int(required=True, validate=validate.Range(min=0))
+
+    created_at = fields.DateTime(dump_only=True)
+
+    @post_load
+    def make_workout_exercise(self, data, **kwargs):
+        return WorkoutExercise(**data)
+
+
+exercise_schema = ExerciseSchema()
+exercises_schema = ExerciseSchema(many=True)
+
+workout_schema = WorkoutSchema()
+workouts_schema = WorkoutSchema(many=True)
+
+workout_exercise_schema = WorkoutExerciseSchema()
+workout_exercises_schema = WorkoutExerciseSchema(many=True)
