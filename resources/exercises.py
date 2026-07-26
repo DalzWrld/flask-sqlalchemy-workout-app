@@ -12,6 +12,7 @@ class Exercises(Resource):
 
     def post(self):
         data = request.get_json()
+        return (exercise_schema.load(data), 201)
 
 class ExerciseByID(Resource):
     def get(self, id):
