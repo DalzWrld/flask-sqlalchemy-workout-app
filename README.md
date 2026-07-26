@@ -76,7 +76,3 @@ the problem. Validation is enforced at three levels:
 - **Schema validations**: request payloads are checked for required fields,
   allowed categories, and that at least one of reps/sets/duration_seconds is
   present when adding an exercise to a workout.
-
-## Allowed Exercise Categories
-
-`strength`, `cardio`, `flexibility`, `balance`, `plyometric`
