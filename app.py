@@ -4,7 +4,7 @@ from flask_migrate import Migrate
 from flask_restful import Api
 
 from models import Exercise, Workout, WorkoutExercise, db
-from schemas import exercise_schema, exercises_schema, workout_schema, workouts_schema
+from schemas import exercise_schema, exercises_schema, workout_schema, workouts_schema, workout_exercise_schema
 
 load_dotenv()
 
@@ -95,6 +95,42 @@ def delete_exercise(id):
         "message": "Exercise deleted successfully."
     }), 200
 
+# Workout_exercises
+@app.route(
+    "/workouts/<int:workout_id>/exercises/<int:exercise_id>/workout_exercises",
+    methods=["POST"]
+)
+def add_exercise_to_workout(workout_id, exercise_id):
+
+    workout = Workout.query.get_or_404(workout_id)
+    exercise = Exercise.query.get_or_404(exercise_id)
+
+    data = request.get_json()
+
+    try:
+
+        workout_exercise = WorkoutExercise(
+            workout=workout,
+            exercise=exercise,
+            sets=data["sets"],
+            reps=data["reps"],
+            duration_seconds=data.get("duration_seconds")
+        )
+
+        db.session.add(workout_exercise)
+        db.session.commit()
+
+        return jsonify(
+            workout_exercise_schema.dump(workout_exercise)
+        ), 201
+
+    except Exception as e:
+
+        db.session.rollback()
+
+        return jsonify({
+            "error": str(e)
+        }), 400
 
 api = Api(app=app)
 
