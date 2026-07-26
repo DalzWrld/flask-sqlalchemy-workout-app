@@ -23,14 +23,16 @@ def seed_data():
         ]
         db.session.add_all(exercises)
         db.session.commit()
+        print(f"{len(exercises)} exercises seeded.")
 
         workouts = [
-            Workout(date=date(2026, 7, 20), duration_minutes=45, notes="Morning strength session"),
-            Workout(date=date(2026, 7, 22), duration_minutes=35, notes="Quick cardio and core"),
-            Workout(date=date(2026, 7, 24), duration_minutes=60, notes="Full-body workout"),
+            Workout(date=date(2026, 7, 25), duration_minutes=60, notes="Upper body strength session"),
+            Workout(date=date(2026, 7, 26), duration_minutes=45, notes="Morning cardio"),
+            Workout(date=date(2026, 7, 27), duration_minutes=75, notes="Leg day")
         ]
         db.session.add_all(workouts)
         db.session.commit()
+        print(f"{len(workouts)} workouts seeded.")
 
         workout_exercises = [
             WorkoutExercise(workouts=workouts[0], exercises=exercises[0], sets=3, reps=10),
@@ -42,6 +44,7 @@ def seed_data():
         ]
         db.session.add_all(workout_exercises)
         db.session.commit()
+        print(f"{len(workout_exercises)} workout exercises seeded.")
 
         print("Seed data created successfully.")
 
