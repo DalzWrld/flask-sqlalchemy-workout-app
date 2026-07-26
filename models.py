@@ -25,7 +25,7 @@ class Exercise(db.Model):
     equipment_needed = db.Column(db.Boolean, nullable=False, default=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
-    workout_exercises = db.relationship("WorkoutExercise", back_populates="exercise", cascade="all, delete-orphan")
+    workout_exercises = db.relationship("WorkoutExercise", back_populates="exercises", cascade="all, delete-orphan")
     workouts = db.relationship("Workout", secondary="workout_exercises", back_populates="exercises")
 
     @validates("name")
@@ -61,7 +61,7 @@ class Workout(db.Model):
     notes = db.Column(db.Text(250))
     created_at = db.Column(db.DateTime, default=datetime.now)
 
-    workout_exercises = db.relationship("WorkoutExercise", back_populates="workout", cascade="all, delete-orphan")
+    workout_exercises = db.relationship("WorkoutExercise", back_populates="workouts", cascade="all, delete-orphan")
     exercises = db.relationship("Exercise", secondary="workout_exercises", back_populates="workouts")
 
     @validates("duration_minutes")
@@ -72,13 +72,14 @@ class Workout(db.Model):
             )
         return value
 
+
 class WorkoutExercise(db.Model):
     __tablename__ = "workout_exercises"
 
     id = db.Column(db.Integer, primary_key=True)
 
-    workout_id = db.Column(db.Integer, db.ForeignKey("workouts.id"))
-    exercise_id = db.Column(db.Integer, db.ForeignKey("exercises.id"))
+    workout_id = db.Column(db.Integer, db.ForeignKey("workouts.id"), nullable=False)
+    exercise_id = db.Column(db.Integer, db.ForeignKey("exercises.id"), nullable=False)
 
     sets = db.Column(db.Integer, nullable=False)
     reps = db.Column(db.Integer, nullable=False)
@@ -87,3 +88,17 @@ class WorkoutExercise(db.Model):
 
     workouts = db.relationship("Workout", back_populates="workout_exercises")
     exercises = db.relationship("Exercise", back_populates="workout_exercises")
+
+    @validates("reps")
+    def validate_reps(self, key, value):
+        if value <= 0:
+            raise ValueError("Reps must be greater than zero.")
+        return value
+
+    @validates("duration_seconds")
+    def validate_duration(self, key, value):
+        if value is not None and value < 0:
+            raise ValueError(
+                "Duration cannot be negative."
+            )
+        return value
