@@ -12,11 +12,14 @@ def seed_data():
         db.session.commit()
 
         exercises = [
-            Exercise(name="Squat", category="Legs", equipment_needed=False),
-            Exercise(name="Bench Press", category="Upper Body", equipment_needed=True),
-            Exercise(name="Deadlift", category="Legs", equipment_needed=True),
-            Exercise(name="Pull-Up", category="Upper Body", equipment_needed=False),
-            Exercise(name="Plank", category="Core", equipment_needed=False),
+            Exercise(name="Bench Press", category="Strength", equipment_needed=True),
+            Exercise(name="Barbell Squat", category="Strength", equipment_needed=True),
+            Exercise(name="Deadlift", category="Strength", equipment_needed=True),
+            Exercise(name="Push-ups", category="Strength", equipment_needed=False),
+            Exercise(name="Running", category="Cardio", equipment_needed=False),
+            Exercise(name="Jumping Jacks", category="Cardio", equipment_needed=False),
+            Exercise(name="Plank", category="Balance", equipment_needed=False),
+            Exercise(name="Yoga Stretch", category="Flexibility", equipment_needed=False)
         ]
         db.session.add_all(exercises)
         db.session.commit()

@@ -2,12 +2,9 @@ from marshmallow import (
     Schema,
     ValidationError,
     fields,
-    post_load,
     validate,
     validates,
 )
-
-from models import Exercise, Workout, WorkoutExercise
 
 
 class ExerciseSchema(Schema):
@@ -16,8 +13,6 @@ class ExerciseSchema(Schema):
     category = fields.Str(required=True)
     equipment_needed = fields.Bool(required=True)
     created_at = fields.DateTime(dump_only=True)
-
-    # workouts = fields.Nested("WorkoutSchema", excludes=("workouts"))
 
     @validates("category")
     def validate_category(self, value):
