@@ -2,6 +2,7 @@ from datetime import datetime
 
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
+from sqlalchemy.orm import validates
 
 naming_convention = {
     "ix": 'ix_%(column_0_label)s',
@@ -24,8 +25,32 @@ class Exercise(db.Model):
     equipment_needed = db.Column(db.Boolean, nullable=False, default=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
-    workout_exercises = db.relationship("WorkoutExercise", back_populates="exercises", cascade="all, delete-orphan")
+    workout_exercises = db.relationship("WorkoutExercise", back_populates="exercise", cascade="all, delete-orphan")
     workouts = db.relationship("Workout", secondary="workout_exercises", back_populates="exercises")
+
+    @validates("name")
+    def validate_name(self, key, value):
+        if not value or value.strip() == "":
+            raise ValueError("Exercise name cannot be empty.")
+        return value.strip()
+
+    @validates("category")
+    def validate_category(self, key, value):
+        valid_categories = [
+            "Strength",
+            "Cardio",
+            "Flexibility",
+            "Balance",
+            "Mobility"
+        ]
+
+        if value not in valid_categories:
+            raise ValueError(
+                f"Category must be one of: {', '.join(valid_categories)}"
+            )
+
+        return value
+
 
 class Workout(db.Model):
     __tablename__ = "workouts"
@@ -33,10 +58,19 @@ class Workout(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.Date, nullable=False)
     duration_minutes = db.Column(db.Integer, nullable=False)
-    notes = db.Column(db.Text(250), nullable=True)
+    notes = db.Column(db.Text(250))
     created_at = db.Column(db.DateTime, default=datetime.now)
 
-    workout_exercises = db.relationship("WorkoutExercise", back_populates="workouts", cascade="all, delete-orphan")
+    workout_exercises = db.relationship("WorkoutExercise", back_populates="workout", cascade="all, delete-orphan")
+    exercises = db.relationship("Exercise", secondary="workout_exercises", back_populates="workouts")
+
+    @validates("duration_minutes")
+    def validate_duration(self, key, value):
+        if value <= 0:
+            raise ValueError(
+                "Workout duration must be greater than zero."
+            )
+        return value
 
 class WorkoutExercise(db.Model):
     __tablename__ = "workout_exercises"
