@@ -68,7 +68,7 @@ class WorkoutByID(Resource):
 
             response = {"message": "Workout deleted successfully"}
 
-            return make_response(response, 204)
+            return make_response(response, 200)
 
         else:
             response = {"status": 404, "message": "Workout not found"}
