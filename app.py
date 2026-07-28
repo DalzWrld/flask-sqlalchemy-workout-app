@@ -5,9 +5,9 @@ from flask_restful import Api
 
 from extensions import log
 from models import db
-from resources.workouts import Workouts, WorkoutByID
-from resources.exercises import Exercises, ExerciseByID
+from resources.exercises import ExerciseByID, Exercises
 from resources.workout_exercises import WorkoutExercises
+from resources.workouts import WorkoutByID, Workouts
 
 load_dotenv()
 
@@ -34,12 +34,13 @@ api.add_resource(Workouts, "/workouts")
 api.add_resource(WorkoutByID, "/workouts/<int:id>")
 
 api.add_resource(Exercises, "/exercises")
-api.add_resource(ExerciseById, "/exercises/<int:id>")
+api.add_resource(ExerciseByID, "/exercises/<int:id>")
 
 api.add_resource(
     WorkoutExercises,
     "/workouts/<int:workout_id>/exercises/<int:exercise_id>/workout_exercises",
 )
+
 
 if __name__ == '__main__':
     app.run(debug=True)
