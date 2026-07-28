@@ -48,7 +48,7 @@ class Exercises(Resource):
             return make_response(response, 400)
 
 
-class WorkoutByID(Resource):
+class ExerciseByID(Resource):
     def get(self, id):
         exercise = Exercise.query.filter_by(id=id).first()
 
