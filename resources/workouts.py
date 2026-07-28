@@ -46,3 +46,31 @@ class Workouts(Resource):
             }
 
             return make_response(response, 400)
+
+
+class WorkoutByID(Resource):
+    def get(self, id):
+        workout = Workout.query.filter_by(id=id).first()
+
+        if workout:
+            return make_response(workout_schema.dump(workout), 200)
+        else:
+            response = {"status": 404, "message": "Workout not found"}
+
+            return make_response(response, 404)
+
+    def delete(self, id):
+        workout = Workout.query.filter_by(id=id).first()
+
+        if workout:
+            db.session.delete(workout)
+            db.session.commit()
+
+            response = {"message": "Workout deleted successfully"}
+
+            return make_response(response, 200)
+
+        else:
+            response = {"status": 404, "message": "Workout not found"}
+
+            return make_response(response, 404)
