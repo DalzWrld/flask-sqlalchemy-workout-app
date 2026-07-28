@@ -11,7 +11,7 @@ class Workouts(Resource):
     def get(self):
         workouts = Workout.query.all()
 
-        log.info("get_all_users", request_data=workouts_schema.dump(workouts))
+        log.info("get_all_workouts", request_data=workouts_schema.dump(workouts))
         return make_response(workouts_schema.dump(workouts), 200)
 
     def post(self):
@@ -68,7 +68,7 @@ class WorkoutByID(Resource):
 
             response = {"message": "Workout deleted successfully"}
 
-            return make_response(response, 200)
+            return make_response(response, 204)
 
         else:
             response = {"status": 404, "message": "Workout not found"}
